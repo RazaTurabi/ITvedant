@@ -38,7 +38,6 @@ pluggy==1.5.0
 proglog==0.1.10
 prompt_toolkit==3.0.48
 psycopg2==2.9.10
-pypiwin32==223
 PySocks==1.7.1
 pytest==8.3.4
 python-crontab==3.2.0
