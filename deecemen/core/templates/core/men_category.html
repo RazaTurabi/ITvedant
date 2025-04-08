@@ -1,0 +1,246 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Carousel -->
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" style='margin-top: 6rem;'>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{% static 'core/images/menbanner2.jpg' %}" class="d-block w-100" alt="Men's Streetwear Banner">
+            <div class="carousel-caption d-block d-md-block">
+                <h1>Elevate Your Game – The Ultimate Men's Streetwear Collection</h1>
+                <p>Handpicked styles for trendsetters. From casual to statement fits – Own your look!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="headi text-center mt-5">
+    <h1>MEN FEATURED PRODUCTS</h1>
+</div>
+
+<div class="p-4 mb-5">
+    {% include "core/card_wpd.html" %}
+</div>
+
+<!-- Main Container -->
+<form method="get" class="container main-container mt-5">
+    <!-- Hamburger Button for Mobile -->
+    <div class="mobile-filter-header d-md-none">
+        <button class="filter-toggle btn btn-primary" type="button">
+            Filters
+        </button>
+    </div>
+
+    <!-- Content Wrapper -->
+    <div class="row g-4">
+        <!-- Filters Sidebar -->
+        <div class="col-md-3 filters-sidebar">
+            <div class="filter-header">
+                <h4>Filters</h4>
+                <button class="close-filter btn btn-outline-secondary d-md-none" type="button">×</button>
+            </div>
+
+            <!-- Color Filter -->
+            <div class="mb-3">
+                <label for="color" class="form-label">Color:</label>
+                <select name="color" id="color" class="form-select" onchange="this.form.submit()">
+                    <option value="">All</option>
+                    {% for color in color %}
+                        <option value="{{ color }}" {% if color == selected_color %}selected{% endif %}>{{ color }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Size Filter -->
+            <div class="mb-3">
+                <label for="size" class="form-label">Size:</label>
+                <select name="size" id="size" class="form-select" onchange="this.form.submit()">
+                    <option value="">All</option>
+                    {% for size in size %}
+                        <option value="{{ size }}" {% if size == selected_size %}selected{% endif %}>{{ size }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Price Filter -->
+            <div class="mb-3">
+                <label for="min_price" class="form-label">Min Price:</label>
+                <input type="number" name="min_price" id="min_price" step="0.01" class="form-control" placeholder="Min Price" value="{{ min_price }}" onchange="this.form.submit()">
+            </div>
+
+            <div class="mb-3">
+                <label for="max_price" class="form-label">Max Price:</label>
+                <input type="number" name="max_price" id="max_price" step="0.01" class="form-control" placeholder="Max Price" value="{{ max_price }}" onchange="this.form.submit()">
+            </div>
+        </div>
+
+        <!-- Product Cards -->
+        <div class="col-md-9 products-container">
+            <div class="headis text-center mb-4">
+                <h1>MEN'S BESTSELLERS PRODUCTS</h1>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+                {% for m in men %}
+                    <div class="col">
+                        <a href="{% url 'clothe2_details' m.id %}" class="card-link">
+                            <div class="card h-100">
+                                <img src="{{ m.image.url }}" alt="{{ m.name }}" class="card-img-top product-image">
+                                <div class="card-body">
+                                    <h3 class="card-title">{{ m.name }}</h3>
+                                    <p>{{ m.color }} | {{ m.size }}</p>
+                                    <p class="card-text">{{ m.description }}</p>
+                                    <p class="price mt-2"><b>Price: ₹{{ m.price }}</b></p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% empty %}
+                    <div class="col">
+                        <p>No products found with the selected filters.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+    /* Carousel Fixes */
+    .carousel-item {
+        min-height: 400px;
+    }
+    .carousel-item img {
+        object-fit: cover;
+        height: 100%;
+    }
+    .carousel-caption {
+        bottom: 20px;
+        padding: 15px;
+        text-align: center;
+        color: #fff;
+    }
+    .carousel-caption h1 {
+        font-size: 2.5rem;
+        word-wrap: break-word;
+    }
+    .carousel-caption p {
+        font-size: 1.2rem;
+        word-wrap: break-word;
+    }
+    @media (max-width: 768px) {
+        .carousel-caption h1 {
+            font-size: 2rem;
+        }
+        .carousel-caption p {
+            font-size: 0.9rem;
+        }
+        .carousel-item {
+            min-height: 300px;
+        }
+        .carousel-item img {
+            object-fit: cover;
+            height: 400px;
+        }
+    }
+
+    /* Main Container */
+    .main-container {
+        max-width: 1400px;
+    }
+
+    .filters-sidebar {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        height: fit-content;
+    }
+
+    .filter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .products-container .card {
+        transition: transform 0.2s;
+    }
+
+    .products-container .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .product-image {
+        height: 300px;
+        object-fit: cover;
+    }
+
+    
+
+    /* Mobile Styles */
+    @media (max-width: 767.98px) {
+        .filters-sidebar {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100%;
+            z-index: 1000;
+            transition: left 0.3s ease-in-out;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+        }
+
+        .filters-sidebar.active {
+            left: 0;
+        }
+
+        .mobile-filter-header {
+            text-align: center;
+        }
+
+        .product-image {
+            height: 290px;
+        }
+    }
+
+    /* Overlay for mobile when filter is open */
+    .filters-sidebar.active ~ .products-container::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.querySelector('.filter-toggle');
+        const closeButton = document.querySelector('.close-filter');
+        const sidebar = document.querySelector('.filters-sidebar');
+
+        toggleButton.addEventListener('click', function() {
+            sidebar.classList.add('active');
+        });
+
+        closeButton.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+        });
+
+        // Close filter when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !toggleButton.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+    });
+</script>
+
+{% endblock content %}

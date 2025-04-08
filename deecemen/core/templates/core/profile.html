@@ -1,0 +1,164 @@
+{% extends "core/base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bike Store Profile</title>
+    <style>
+        .profile-container {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .profile-image img {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 4rem;
+        }
+
+        .profile-info h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-info button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .profile-info button:hover {
+            opacity: 0.9;
+            transform: translateX(5px);
+        }
+
+        .profile-cards {
+            padding: 1rem;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            border-radius: 8px;
+        }
+
+        .profile-cards > div {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            .profile-card {
+                flex-direction: row;
+                gap: 3rem;
+            }
+
+            .profile-image img {
+                max-width: 200px;
+            }
+
+            .profile-info {
+                flex: 1;
+            }
+
+            .profile-info h1 {
+                font-size: 2rem;
+            }
+
+            .profile-info button {
+                padding: 1rem 2rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .profile-container {
+                padding: 0.5rem;
+            }
+
+            .profile-info button {
+                font-size: 0.9rem;
+                padding: 0.8rem;
+            }
+
+            .profile-info h1 {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>MY ACCOUNT</h1>
+        <div class="profile-card">
+            {% comment %} <div class="profile-image">
+                <img src="https://via.placeholder.com/150" alt="Profile Picture">
+            </div> {% endcomment %}
+            <div class="profile-info">
+                <h1>Welcome, {{request.user}}</h1>
+                <a href="" style='text-decoration:none;'>
+                    <button type='button' style='border-radius: 0 17px 17px 0; background-color:black; color:white; display:flex; justify-content:space-between; align-items:center;'>
+                        <span style='padding: 20px;'>HOMEBASE</span>
+                        <i class="fa-solid fa-user-tie fa-2xl" style="color: #9a9b9e; cursor: pointer;"></i>
+                    </button>
+                </a>
+                <a href="{% url 'my_orders' %}" style='text-decoration:none;'>
+                    <button type='button' style='border-radius: 0 17px 17px 0; color:black; display:flex; justify-content:space-between; align-items:center;'>
+                        <span style='padding: 20px;'>ORDERS</span>
+                        <i class="fa-solid fa-cart-flatbed-suitcase fa-2xl" style="color: #9a9b9e; cursor: pointer;"></i>
+                    </button>
+                </a>
+                <a href="{% url 'address' %}" style='text-decoration:none;'>
+                    <button type='button' style='border-radius: 0 17px 17px 0; color:black; display:flex; justify-content:space-between; align-items:center;'>
+                        <span style='padding: 20px;'>ADDRESS</span>
+                        <i class="fa-solid fa-gears fa-2xl" style="color: #9a9b9e; cursor: pointer;"></i>
+                    </button>
+                </a>
+                <a href="{% url 'logout' %}" style='text-decoration:none;'>
+                    <button type='button' style='border-radius: 0 17px 17px 0; color:black; display:flex; justify-content:space-between; align-items:center;'>
+                        <span style='padding: 20px;'>LOGOUT</span>
+                        <i class="fa-solid fa-right-from-bracket fa-2xl" style="color: #9a9b9e; cursor: pointer;"></i>
+                    </button>
+                </a>
+            </div>
+            <div style='flex: 1; margin-top: 6rem;'>
+                <h4>PROFILE CARD</h4>
+                <div class="profile-cards">
+                    <div>
+                        <i class="fa-solid fa-envelope fa-xl"></i>
+                        <div>{{request.user.email}}</div>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-location-dot fa-xl"></i>
+                        <div>{{request.user}}, INDIA</div>
+                    </div>
+                </div>
+                <button style='width: 100%; margin-top: 1rem; padding: 1rem; border-radius: 20px;'>SET MY PASSWORD</button>
+                <button style='width: 100%; margin-top: 0.5rem; padding: 1rem; border-radius: 20px;'>CHANGE MY PASSWORD</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock content %}

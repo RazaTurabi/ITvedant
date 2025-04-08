@@ -1,0 +1,781 @@
+{% load static %}
+{% block content %}
+<head>
+  <script src="https://kit.fontawesome.com/3b161c540c.js" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<nav class="dc-scroll-navbar">
+  <div class="dc-nav-container">
+    <a href="{% url 'home' %}" class="dc-nav-logo">
+      <img style='border-radius:49px; border:2px solid black;' src="{% static 'core/images/formen_logo.png' %}" alt="Logo">
+    </a>
+    
+    <div class="dc-nav-links">
+      <a href="{% url 'home' %}" class="dc-nav-link active">Home</a>
+      <a href="{% url "about" %}" class="dc-nav-link">About</a>
+      
+      <div class="dc-shop-dropdown">
+        <button class="dc-shop-dropbtn">Shop <i class="fas fa-caret-down"></i></button>
+        <div class="dc-shop-dropdown-content">
+          <a href="{% url 'men_category' %}">Men</a>
+          <a href="{% url 'women_category' %}">Women</a>
+          <a href="{% url 'kids_category' %}">Kids</a>
+          <a href="{% url 'hoodjack_category' %}">New Arrivals</a>
+          <a href="{% url 'footwear_category' %}">Bestsellers</a>
+          <a href="#">Sale</a>
+        </div>
+      </div>
+      
+      <div class="dc-collections-dropdown">
+        <button class="dc-collections-dropbtn">Collections <i class="fas fa-caret-down"></i></button>
+        <div class="dc-collections-dropdown-content">
+          <a href="#">Street Wear</a>
+          <a href="#">Formal Wear</a>
+          <a href="#">Casual Wear</a>
+          <a href="#">Athleisure</a>
+          <a href="#">Accessories</a>
+        </div>
+      </div>
+      
+      <a href="{% url "contact" %}" class="dc-nav-link">Contact</a>
+    </div>
+    
+    <div class="dc-nav-actions">
+      <form class="dc-search-form">
+        <input type="search" placeholder="Search..." class="dc-search-input">
+        <button type="submit" class="dc-search-btn"><i class="fas fa-search"></i></button>
+      </form>
+      
+      <div class="dc-user-actions">
+        {% if request.user.is_authenticated %}
+          <a href="{% url 'profile' %}" class="dc-user-btn"><i class="far fa-user"></i></a>
+          <a href="{% url 'view_cart' %}" class="dc-cart-btn">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="dc-cart-count">0</span>
+          </a>
+        {% else %}
+          <a href="{% url 'signup' %}" class="dc-signup-btn"><i class="fas fa-user-plus"></i></a>
+        {% endif %}
+      </div>
+    </div>
+    
+    <button class="dc-mobile-menu-btn" id="mobileMenuButton">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div class="dc-mobile-menu" id="mobileMenu">
+    <div class="dc-mobile-menu-header">
+      <button class="dc-mobile-close-btn" id="mobileCloseButton">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <a href="{% url 'home' %}" class="dc-mobile-link active">Home</a>
+    <a href="#" class="dc-mobile-link">About</a>
+    
+    <div class="dc-mobile-shop-dropdown">
+      <button class="dc-mobile-shop-dropbtn">Shop <i class="fas fa-caret-down"></i></button>
+      <div class="dc-mobile-shop-dropdown-content">
+        <a href="{% url 'men_category' %}">Men</a>
+        <a href="{% url 'women_category' %}">Women</a>
+        <a href="{% url 'kids_category' %}">Kids</a>
+        <a href="{% url 'hoodjack_category' %}">New Arrivals</a>
+        <a href="{% url 'footwear_category' %}">Bestsellers</a>
+        <a href="#">Sale</a>
+      </div>
+    </div>
+    
+    <div class="dc-mobile-collections-dropdown">
+      <button class="dc-mobile-collections-dropbtn">Collections <i class="fas fa-caret-down"></i></button>
+      <div class="dc-mobile-collections-dropdown-content">
+        <a href="#">Street Wear</a>
+        <a href="#">Formal Wear</a>
+        <a href="#">Casual Wear</a>
+        <a href="#">Athleisure</a>
+        <a href="#">Accessories</a>
+      </div>
+    </div>
+    
+    <a href="#" class="dc-mobile-link">Contact</a>
+    
+    <form class="dc-mobile-search">
+      <input type="search" placeholder="Search..." class="dc-mobile-search-input">
+      <button type="submit" class="dc-mobile-search-btn"><i class="fas fa-search"></i> Search</button>
+    </form>
+    
+    <div class="dc-mobile-user-actions">
+      {% if request.user.is_authenticated %}
+        <a href="{% url 'profile' %}" class="dc-mobile-user-btn"><i class="far fa-user"></i> Profile</a>
+        <a href="{% url 'view_cart' %}" class="dc-mobile-cart-btn">
+          <i class="fas fa-shopping-cart"></i> Cart
+          <span class="dc-mobile-cart-count">0</span>
+        </a>
+      {% else %}
+        <a href="{% url 'signup' %}" class="dc-mobile-signup-btn"><i class="fas fa-user-plus"></i> Sign Up</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+<style>
+  /* Base Navbar Styles */
+  .dc-scroll-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    transform: translateY(0);
+  }
+  
+  /* Scrolled State */
+  .dc-scroll-navbar.scrolled {
+    background-color: rgba(255,255,255,0.95);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    padding: 5px 0;
+  }
+  
+  .dc-nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .dc-scroll-navbar.scrolled .dc-nav-container {
+    padding: 5px 20px;
+  }
+  
+  .dc-nav-logo img {
+    height: 100px;
+    transition: all 0.3s ease;
+  }
+  
+  .dc-scroll-navbar.scrolled .dc-nav-logo img {
+    height: 35px;
+  }
+  
+  .dc-nav-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .dc-nav-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 10px 0;
+  }
+  
+  .dc-nav-link:hover {
+    color: #3D8361;
+  }
+  
+  .dc-nav-link.active {
+    color: #3D8361;
+    font-weight: 600;
+  }
+  
+  .dc-nav-link.active:after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #3D8361;
+  }
+  
+  /* Shop Dropdown Styles */
+  .dc-shop-dropdown {
+    position: relative;
+  }
+  
+  .dc-shop-dropbtn {
+    background: none;
+    border: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 10px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .dc-shop-dropbtn:hover {
+    color: #3D8361;
+  }
+  
+  .dc-shop-dropdown:hover .dc-shop-dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .dc-shop-dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 100;
+  }
+  
+  .dc-shop-dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .dc-shop-dropdown-content a:hover {
+    background-color: #f5f5f5;
+    color: #3D8361;
+  }
+  
+  /* Collections Dropdown Styles */
+  .dc-collections-dropdown {
+    position: relative;
+  }
+  
+  .dc-collections-dropbtn {
+    background: none;
+    border: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 10px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .dc-collections-dropbtn:hover {
+    color: #3D8361;
+  }
+  
+  .dc-collections-dropdown:hover .dc-collections-dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .dc-collections-dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 100;
+  }
+  
+  .dc-collections-dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .dc-collections-dropdown-content a:hover {
+    background-color: #f5f5f5;
+    color: #3D8361;
+  }
+  
+  /* Search and User Actions */
+  .dc-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .dc-search-form {
+    display: flex;
+    align-items: center;
+  }
+  
+  .dc-search-input {
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 8px 15px;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  .dc-search-input:focus {
+    border-color: #3D8361;
+    box-shadow: 0 0 0 2px rgba(61, 131, 97, 0.2);
+  }
+  
+  .dc-search-btn {
+    background: none;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 1rem;
+  }
+  
+  .dc-user-actions {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .dc-user-btn,
+  .dc-cart-btn,
+  .dc-signup-btn {
+    color: #333;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+  }
+  
+  .dc-cart-btn {
+    position: relative;
+  }
+  
+  .dc-cart-count {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Mobile Menu Button (Hidden by Default) */
+  .dc-mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  /* Mobile Menu */
+  .dc-mobile-menu {
+    display: none;
+    flex-direction: column;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1001;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .dc-mobile-menu.show {
+    display: flex;
+    transform: translateX(0);
+  }
+  
+  .dc-mobile-menu-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 0;
+  }
+  
+  .dc-mobile-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  .dc-mobile-link {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.2rem;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s ease;
+  }
+  
+  .dc-mobile-link.active {
+    color: #3D8361;
+    font-weight: 600;
+  }
+  
+  .dc-mobile-link:hover {
+    color: #3D8361;
+  }
+  
+  /* Mobile Shop Dropdown */
+  .dc-mobile-shop-dropdown {
+    width: 100%;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .dc-mobile-shop-dropbtn {
+    color: #333;
+    background: none;
+    border: none;
+    font-weight: 500;
+    font-size: 1.2rem;
+    padding: 15px 0;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .dc-mobile-shop-dropdown-content {
+    display: none;
+    padding-left: 15px;
+  }
+  
+  .dc-mobile-shop-dropdown-content.show {
+    display: block;
+  }
+  
+  .dc-mobile-shop-dropdown-content a {
+    display: block;
+    color: #555;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 12px 0;
+    transition: all 0.3s ease;
+  }
+  
+  .dc-mobile-shop-dropdown-content a:hover {
+    color: #3D8361;
+  }
+  
+  /* Mobile Collections Dropdown */
+  .dc-mobile-collections-dropdown {
+    width: 100%;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .dc-mobile-collections-dropbtn {
+    color: #333;
+    background: none;
+    border: none;
+    font-weight: 500;
+    font-size: 1.2rem;
+    padding: 15px 0;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .dc-mobile-collections-dropdown-content {
+    display: none;
+    padding-left: 15px;
+  }
+  
+  .dc-mobile-collections-dropdown-content.show {
+    display: block;
+  }
+  
+  .dc-mobile-collections-dropdown-content a {
+    display: block;
+    color: #555;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 12px 0;
+    transition: all 0.3s ease;
+  }
+  
+  .dc-mobile-collections-dropdown-content a:hover {
+    color: #3D8361;
+  }
+  
+  .dc-mobile-search {
+    margin: 20px 0;
+  }
+  
+  .dc-mobile-search-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  
+  .dc-mobile-search-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #3D8361;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .dc-mobile-user-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+  }
+  
+  .dc-mobile-user-btn,
+  .dc-mobile-cart-btn,
+  .dc-mobile-signup-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 12px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+  }
+  
+  .dc-mobile-cart-btn {
+    position: relative;
+  }
+  
+  .dc-mobile-cart-count {
+    position: absolute;
+    right: 10px;
+    background-color: #e74c3c;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .dc-mobile-user-btn:hover,
+  .dc-mobile-cart-btn:hover,
+  .dc-mobile-signup-btn:hover {
+    background-color: #f5f5f5;
+    color: #3D8361;
+  }
+  
+  /* Body scroll lock when mobile menu is open */
+  body.mobile-menu-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Scroll Animation */
+  @media (min-width: 992px) {
+    .dc-scroll-navbar.hidden {
+      transform: translateY(-100%);
+    }
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 992px) {
+    .dc-nav-links,
+    .dc-nav-actions {
+      display: none;
+    }
+    
+    .dc-mobile-menu-btn {
+      display: block;
+    }
+    
+    .dc-nav-logo img {
+      height: 45px;
+    }
+    
+    .dc-scroll-navbar.scrolled .dc-nav-logo img {
+      height: 40px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .dc-nav-container {
+      padding: 15px;
+    }
+    
+    .dc-nav-logo img {
+      height: 50px;
+    }
+    
+    .dc-scroll-navbar.scrolled .dc-nav-logo img {
+      height: 45px;
+    }
+    
+    .dc-mobile-menu-btn {
+      font-size: 1.8rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .dc-nav-logo img {
+      height: 65px;
+    }
+    
+    .dc-scroll-navbar.scrolled .dc-nav-logo img {
+      height: 40px;
+    }
+    
+    .dc-mobile-menu-btn {
+      font-size: 2rem;
+    }
+    
+    .dc-mobile-link,
+    .dc-mobile-shop-dropbtn,
+    .dc-mobile-collections-dropbtn {
+      font-size: 1.4rem;
+      padding: 18px 0;
+    }
+    
+    .dc-mobile-shop-dropdown-content a,
+    .dc-mobile-collections-dropdown-content a {
+      font-size: 1.3rem;
+      padding: 15px 0;
+    }
+    
+    .dc-mobile-search-input,
+    .dc-mobile-search-btn,
+    .dc-mobile-user-btn,
+    .dc-mobile-cart-btn,
+    .dc-mobile-signup-btn {
+      font-size: 1.3rem;
+      padding: 15px;
+    }
+    
+    .dc-mobile-cart-count {
+      width: 25px;
+      height: 25px;
+      font-size: 0.9rem;
+    }
+  }
+</style>
+
+<script>
+  // Navbar Scroll Animation
+  document.addEventListener('DOMContentLoaded', function() {
+    const navbar = document.querySelector('.dc-scroll-navbar');
+    let lastScroll = 0;
+    
+    window.addEventListener('scroll', function() {
+      const currentScroll = window.pageYOffset;
+      
+      if (currentScroll <= 0) {
+        navbar.classList.remove('scrolled');
+        navbar.classList.remove('hidden');
+        return;
+      }
+      
+      if (currentScroll > lastScroll && currentScroll > 100) {
+        // Scroll Down
+        navbar.classList.add('hidden');
+      } else if (currentScroll < lastScroll) {
+        // Scroll Up
+        navbar.classList.remove('hidden');
+      }
+      
+      if (currentScroll > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+      
+      lastScroll = currentScroll;
+    });
+    
+    // Mobile Menu Toggle
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const mobileCloseButton = document.getElementById('mobileCloseButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const body = document.body;
+    
+    mobileMenuButton.addEventListener('click', function() {
+      mobileMenu.classList.add('show');
+      body.classList.add('mobile-menu-open');
+    });
+    
+    mobileCloseButton.addEventListener('click', function() {
+      mobileMenu.classList.remove('show');
+      body.classList.remove('mobile-menu-open');
+    });
+    
+    // Close mobile menu when clicking on a link
+    const mobileLinks = document.querySelectorAll('.dc-mobile-link, .dc-mobile-shop-dropdown-content a, .dc-mobile-collections-dropdown-content a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        mobileMenu.classList.remove('show');
+        body.classList.remove('mobile-menu-open');
+      });
+    });
+    
+    // Mobile Dropdown Toggles
+    const mobileShopDropdown = document.querySelector('.dc-mobile-shop-dropbtn');
+    const mobileCollectionsDropdown = document.querySelector('.dc-mobile-collections-dropbtn');
+    
+    mobileShopDropdown.addEventListener('click', function() {
+      const dropdownContent = this.nextElementSibling;
+      dropdownContent.classList.toggle('show');
+      const caret = this.querySelector('i');
+      caret.classList.toggle('fa-rotate-180');
+    });
+    
+    mobileCollectionsDropdown.addEventListener('click', function() {
+      const dropdownContent = this.nextElementSibling;
+      dropdownContent.classList.toggle('show');
+      const caret = this.querySelector('i');
+      caret.classList.toggle('fa-rotate-180');
+    });
+  });
+
+</script>
+{% endblock content %}

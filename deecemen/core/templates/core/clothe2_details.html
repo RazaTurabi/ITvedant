@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<br><br><br>
+<div class="container petdetails" style='margin-top: 3rem; margin-bottom: 3rem;'>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <span class="border border-danger">
+                <!-- Display the image of the DeeceCategory2 item -->
+                <img src="{{ cd.image.url }}" class="img-fluid rounded border border-primary" alt="Responsive image" >
+            </span>
+        </div>
+        <div class="col-sm-6">
+            <div class="container">
+                <h1 class="jumbotron-heading text-center text-danger">{{ cd.name }}</h1>
+                <p class="lead text-center">{{ cd.small_descp }}</p>
+                <div class="text-center">
+                    <!-- Display the original price (if available) -->
+                    <h4 class="font-weight-bold">
+                        <i class="fa-solid fa-indian-rupee-sign"></i>{{ cd.price }}
+                        <small class="fw-light rupee">{{ cd.price }}</small> 
+                        <small class="text-danger">(72% off)</small>
+                    </h4> 
+                    <!-- Display color and size options -->
+                    <p class="lead text-center">{{ cd.color }}</p>
+                    <p class="lead text-center">{{ cd.size }}</p>
+                    
+                    <!-- Add to cart button -->
+                    
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'add_to_cart' 'deece_category' cd.id %}" class="btn btn-success my-2">Add to Cart</a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-success my-2">Add to Cart</a>
+                    {% endif %}
+                        
+                    <a href="#" class="btn btn-success my-2">Buy Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

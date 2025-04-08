@@ -1,0 +1,115 @@
+{% load static %}
+{% block content %}
+
+<style>
+    .gap {
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .yt-videos {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .yt-videos iframe {
+        border: 4px solid black;
+        margin-top: 3rem;
+        border-radius: 10px;
+        width: 100%;
+        max-width: 400px; /* Maximum width of the iframe */
+        height: auto;
+    }
+
+    /* Mobile screens (1 video per row) */
+    @media (max-width: 600px) {
+        .yt-videos {
+            flex-direction: column;
+            align-items: center;
+        }
+        .yt-videos iframe{
+            height: 300px;
+        }
+    }
+
+    /* Tablet screens (2 videos per row) */
+    @media (min-width: 601px) and (max-width: 1024px) {
+        .yt-videos {
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .yt-videos iframe {
+            height: 300px;
+            width: 45%; /* 2 videos per row */
+        }
+    }
+
+    /* Desktop and larger screens (3 videos per row) */
+    @media (min-width: 1025px) {
+        .yt-videos iframe {
+            width: 30%; /* 3 videos per row */
+        }
+    }
+    @media (min-width: 1026px) {
+        .yt-videos iframe {
+            height: 300px;
+            width: 35%; /* 3 videos per row */
+        }
+    }
+</style>
+
+<h1 style="justify-content: center; margin-top: 2rem; display: flex;">OUR VIDEOS</h1>
+<div class="gap">
+    <div class="yt-videos">
+        <iframe 
+            src="https://www.youtube.com/embed/AU26dhHOJJs?autoplay=1&mute=1&loop=1&playlist=AU26dhHOJJs" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+        
+        <iframe 
+            src="https://www.youtube.com/embed/Phk6hwRP4rc?autoplay=1&mute=1&loop=1&playlist=Phk6hwRP4rc" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+    
+        <iframe 
+            src="https://www.youtube.com/embed/QLx7AxB3ZRM?autoplay=1&mute=1&loop=1&playlist=QLx7AxB3ZRM" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+    </div>
+    <div class="yt-videos">
+        <iframe 
+            src="https://www.youtube.com/embed/AU26dhHOJJs?autoplay=1&mute=1&loop=1&playlist=AU26dhHOJJs" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+        
+        <iframe 
+            src="https://www.youtube.com/embed/Phk6hwRP4rc?autoplay=1&mute=1&loop=1&playlist=Phk6hwRP4rc" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+    
+        <iframe 
+            src="https://www.youtube.com/embed/QLx7AxB3ZRM?autoplay=1&mute=1&loop=1&playlist=QLx7AxB3ZRM" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+    </div>
+</div>
+
+{% endblock content %}

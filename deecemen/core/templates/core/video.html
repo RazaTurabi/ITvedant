@@ -1,0 +1,103 @@
+{% load static %}
+<div class="xai-video-container">
+    <video class="xai-video-bg" autoplay muted loop playsinline>
+        <source src="{% static 'core/videos/bgv.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="xai-overlay-content">
+        <h1 class="xai-main-heading">New Collection 2025</h1>
+        <p class="xai-subheading">Discover the latest trends in fashion</p>
+        <a href="{% url 'subscribe' %}"><button class="xai-subscribe-btn">Subscribe Now</button></a>
+    </div>
+</div>
+
+<style>
+    .xai-video-container {
+        position: relative;
+        width: 100%;
+        height: 47vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: .6rem;
+    }
+    
+    .xai-video-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+   
+    }
+    
+    .xai-overlay-content {
+        position: relative;
+        text-align: center;
+        color: #fff;
+        padding: 2rem;
+        background: rgba(0, 0, 0, 0.4);
+        border-radius: 10px;
+        max-width: 800px;
+        backdrop-filter: blur(5px);
+    }
+    
+    .xai-main-heading {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        margin: 0 0 1rem 0;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+        letter-spacing: 1px;
+    }
+    
+    .xai-subheading {
+        font-size: clamp(1rem, 2.5vw, 1.5rem);
+        margin: 0 0 2rem 0;
+        font-family: 'Open Sans', sans-serif;
+        text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+        line-height: 1.5;
+    }
+    
+    .xai-subscribe-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+        background-color: #ff4d4d;
+        color: #fff;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .xai-subscribe-btn:hover {
+        background-color: #e63939;
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .xai-subscribe-btn:active {
+        transform: scale(0.95);
+    }
+    
+    @media (max-width: 768px) {
+        .xai-overlay-content {
+            padding: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .xai-overlay-content {
+            width: 90%;
+            padding: 1rem;
+        }
+        .xai-main-heading {
+            font-size: 2rem;
+        }
+    }
+</style>

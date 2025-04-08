@@ -1,0 +1,173 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+      /* Global reset */
+      
+
+      /* Centered form container */
+      .form {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 30px;
+        background-color: transparent;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1.5s ease-in-out;
+      }
+
+      /* Form title */
+      .h1 {
+        background-color: black;
+        text-align: center;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .h1 h1 {
+        font-family: 'Poppins', sans-serif;
+        color: white;
+        font-size: 36px;
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      .font {
+        font-family: 'Oswald', sans-serif;
+        color: #555;
+        font-size: 16px;
+        margin-top: 10px;
+      }
+
+      /* FadeIn animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Form styles */
+      .forms {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      form input {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background-color: transparent;
+        transition: all 0.3s ease;
+      }
+
+      form input:focus {
+        border-color: #e1e28f;
+        outline: none;
+        box-shadow: 0 0 5px rgba(225, 226, 143, 0.5);
+      }
+
+      /* Submit Button style */
+      input[type="submit"] {
+        background-color: black;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        padding: 15px;
+        border-radius: 38px;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #c1c17a;
+      }
+
+      /* Link styles */
+      .p {
+        font-size: 14px;
+        color: black;
+        text-align: center;
+      }
+
+      p a {
+        color: #e1e28f;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      p a:hover {
+        text-decoration: underline;
+      }
+
+      /* Error messages */
+      .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+      .background-container-lg {
+        background-image: url("{% static 'core/images/lgbg.png' %}"); /* Replace with your image */
+        background-size: cover;  /* Ensures the image covers the container */
+        background-position: center;  /* Centers the image */
+        background-attachment: fixed;  /* Keeps the background fixed while scrolling */
+        padding: 50px 0; /* Adds vertical space around the content */
+      }
+    </style>
+</head>
+<body>
+  <div class='background-container-lg' style='margin-top: 5rem;'>
+    <div class="form">
+        <div class="h1">
+          <h1><u>Welcome to DEECEMEN</u></h1>
+          <p class="font p">
+            Redefining casual fashion. Sign in to access exclusive collections & offers.
+          </p>
+        </div><br><br>
+    
+        {% if mf.non_field_errors %}
+          <div class="error-message">
+            {% for error in mf.non_field_errors %}
+              <p class='p'>{{ error }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+        
+        <form action="" class="forms" method="POST" novalidate>
+          {% csrf_token %}
+          
+          {% for m in mf %}
+            <div class="form-group">
+              {{ m.label_tag }} 
+              {{ m }}
+              <div class="error-message">
+                {{ m.errors | striptags }}
+              </div>
+            </div>
+          {% endfor %}
+    
+          <input type="submit" value="Login">
+          <p class='p'>Don't have an account? <a href="{% url 'signup' %}"> Sign up</a></p> 
+        </form>
+      </div>
+  </div>
+</body>
+</html>
+
+{% endblock content %}

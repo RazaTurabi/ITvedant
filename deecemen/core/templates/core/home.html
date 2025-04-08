@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %} <title>Document</title> {% endblock title %}
+</head>
+<body>
+    {% block content %}
+    {% comment %} <h1>Home Page, Hello World!</h1> {% endcomment %}
+    {% include 'core/carousel.html' %}
+    {% include "core/category.html" %}
+    {% comment %} {% include "core/category2.html" %} {% endcomment %}
+    {% include "core/product_category.html" %}
+    {% include "core/product_slider.html" %}
+    {% comment %} {% include "core/product_slider2.html" %} {% endcomment %}
+    {% include 'core/sneaker3d.html' %}
+    {% include 'core/slick-autoplay.html' %}
+    {% include 'core/video.html' %}
+    
+    {% endblock content %}
+    
+</body>
+</html>

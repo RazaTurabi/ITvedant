@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Owl Carousel Example</title>
+
+  <!-- ✅ Owl Carousel CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"/>
+
+  <style>
+    body {
+      background: #33AADD;
+      text-align: center;
+      padding: 40px;
+    }
+    .owl-carousel .item img {
+      height: 300px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .control-btns {
+      margin-top: 20px;
+    }
+    .control-btns button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 16px;
+      border: none;
+      background: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="color:white;">Owl Carousel</h1>
+
+  <div class="owl-carousel owl-theme p-4 mt-4">
+    <a href="{% url "men_category" %}"><div class="item"><img src="https://www.shutterstock.com/image-photo/beautiful-colorful-clothes-flying-isolatedwomens-600nw-2257875171.jpg" alt=""></div></a>
+    <a href="{% url "women_category" %}"><div class="item"><img src="https://www.shutterstock.com/image-photo/beautiful-colorful-clothes-flying-isolatedwomens-600nw-2257875171.jpg" alt=""></div></a>
+    <a href="{% url "hoodjack_category" %}"><div class="item"><img src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=600&q=80" alt=""></div></a>
+    <a href="{% url "kids_category" %}"><div class="item"><img src="https://www.shutterstock.com/image-photo/beautiful-colorful-clothes-flying-isolatedwomens-600nw-2257875171.jpg" alt=""></div></a>
+    <a href="{% url "footwear_category" %}"><div class="item"><img src="https://www.shutterstock.com/image-photo/beautiful-colorful-clothes-flying-isolatedwomens-600nw-2257875171.jpg" alt=""></div></a>
+  </div>
+
+  {% comment %} <div class="control-btns">
+    <button class="play">▶ Play</button>
+    <button class="stop">⏸ Stop</button>
+  </div> {% endcomment %}
+
+  <!-- ✅ jQuery + Owl JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+  <script>
+    var owl = $('.owl-carousel');
+    owl.owlCarousel({
+      items: 3,
+      loop: true,
+      margin: 10,
+      autoplay: true,
+      autoplayTimeout: 1000,
+      autoplayHoverPause: true
+    });
+
+    {% comment %} $('.play').on('click', function () {
+      owl.trigger('play.owl.autoplay', [1000]);
+    });
+
+    $('.stop').on('click', function () {
+      owl.trigger('stop.owl.autoplay');
+    }); {% endcomment %}
+  </script>
+
+</body>
+</html>

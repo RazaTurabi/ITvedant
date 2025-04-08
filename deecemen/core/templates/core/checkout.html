@@ -1,0 +1,294 @@
+{% extends "core/base.html" %}
+{% load custom_filters %}
+
+{% block content %}
+<style>
+    :root {
+        --main-color: #e50914;
+        --text-color: #FFFFFF;
+        --bg-dark: #121212;
+        --card-bg: #1e1e1e;
+        --border-color: #333;
+    }
+
+    .checkout-container {
+        color: white;
+        max-width: 1200px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .checkout-header {
+        font-size: 2.5rem;
+        text-align: center;
+        color: var(--main-color);
+        border-bottom: 2px solid var(--main-color);
+        padding-bottom: 10px;
+    }
+
+    .checkout-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        margin-top: 30px;
+    }
+
+    .checkout-table-wrapper {
+        flex: 2;
+        overflow-x: auto;
+    }
+
+    .checkout-table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: var(--card-bg);
+    }
+
+    .checkout-table th,
+    .checkout-table td {
+        border: 1px solid var(--border-color);
+        padding: 10px;
+        text-align: center;
+    }
+
+    .checkout-table th {
+        background-color: var(--main-color);
+        color: white;
+    }
+
+    .product-img {
+        width: 70px;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    .checkout-summary-wrapper,
+    .checkout-address-wrapper {
+        flex: 1;
+        background-color: var(--card-bg);
+        padding: 20px;
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+    }
+
+    .checkout-summary p {
+        margin: 10px 0;
+        font-size: 1.1rem;
+    }
+
+    .checkout-btn {
+        margin-top: 20px;
+        background-color: var(--main-color);
+        border: none;
+        color: white;
+        padding: 15px;
+        font-size: 1rem;
+        border-radius: 8px;
+        width: 100%;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+        background-color: #b20610;
+    }
+
+    .empty-cart {
+        color: white;
+        text-align: center;
+        font-size: 1.3rem;
+        margin-top: 3rem;
+    }
+
+    .checkout-address-wrapper label {
+        display: block;
+        margin-bottom: 15px;
+        cursor: pointer;
+    }
+
+    .checkout-address-wrapper input[type="radio"] {
+        margin-right: 10px;
+    }
+
+    @media (max-width: 992px) {
+        .checkout-content {
+            flex-direction: column;
+        }
+
+        .checkout-summary-wrapper,
+        .checkout-address-wrapper {
+            width: 100%;
+        }
+
+        .checkout-header {
+            font-size: 2rem;
+        }
+
+        .checkout-summary p {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .checkout-header {
+            font-size: 1.5rem;
+        }
+
+        .checkout-btn {
+            font-size: 0.9rem;
+            padding: 12px;
+        }
+
+        .checkout-table th,
+        .checkout-table td {
+            font-size: 0.85rem;
+        }
+    }
+</style>
+
+<div class="checkout-container mt-5">
+    <h1 class="checkout-header" style='margin-top: 7rem;'>Checkout</h1>
+
+    {% if cart_items %}
+        <div class="checkout-content" style='margin-top: 4rem;'>
+            <div class="checkout-table-wrapper">
+                <table class="checkout-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Size</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                            {% with product=item.product_instance %}
+                                {% if product %}
+                                    <tr class="checkout-item">
+                                        <td class="product-img-cell" data-label="Product">
+                                            <img class="product-img" src="{{ product.image.url }}" alt="{{ product.name }}">
+                                        </td>
+                                        <td class="product-name" data-label="Name">{{ product.name }}</td>
+                                        <td class="product-price" data-label="Price">{{ product.price }}</td>
+                                        <td class="product-size" data-label="Size">{{ product.size }}</td>
+                                        <td class="product-quantity" data-label="Quantity">{{ item.quantity }}</td>
+                                        <td class="product-subtotal" data-label="Subtotal">{{ product.price|multiply:item.quantity }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endwith %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Shipping Address Selection -->
+            <div class="checkout-address-wrapper">
+                <h2 style="color: var(--main-color); font-size: 1.3rem; margin-bottom: 1rem;">Select Shipping Address</h2>
+
+                {% if addresses %}
+                    <form id="address-form">
+                        {% for addr in addresses %}
+                            <label>
+                                <input type="radio" name="selected_address" value="{{ addr.id }}" required>
+                                <span>
+                                    <strong>{{ addr.name }}</strong><br>
+                                    {{ addr.address }}<br>
+                                    {{ addr.city }}, {{ addr.state }} - {{ addr.pincode }}<br>
+                                    Phone: {{ addr.phone }}
+                                </span>
+                            </label>
+                        {% endfor %}
+                    </form>
+                {% else %}
+                    <p>No saved address found. <a href="{% url 'address' %}" style="color: var(--main-color); text-decoration: underline;">Add Address</a></p>
+                {% endif %}
+            </div>
+
+            <!-- Order Summary -->
+            <div class="checkout-summary-wrapper">
+                <div class="checkout-summary">
+                    <p><strong>Subtotal:</strong> {{ total }}</p>
+                    <p><strong>Delivery Charge:</strong> {{ delivery_charge }}</p>
+                    <p><strong>Grand Total:</strong> {{ grand_total }}</p>
+                </div>
+
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    <button type="button" class="checkout-btn" id="payWithRazorPay">Pay With Razorpay</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Razorpay Script -->
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+            document.getElementById('payWithRazorPay').onclick = function(e) {
+                const selectedAddressId = document.querySelector('input[name="selected_address"]:checked')?.value;
+
+                if (!selectedAddressId) {
+                    alert("Please select a shipping address before proceeding.");
+                    return;
+                }
+
+                var options = {
+                    "key": "{{ razorpay_key }}",
+                    "amount": {{ grand_total|floatformat:2 }} * 100,
+                    "currency": "INR",
+                    "order_id": "{{ razorpay_order_id }}",
+                    "name": "DEECEMEN",
+                    "description": "Order Payment",
+                    "image": "URL_TO_YOUR_LOGO",
+                    "handler": function (response) {
+                        var paymentData = {
+                            payment_id: response.razorpay_payment_id,
+                            order_id: response.razorpay_order_id,
+                            signature: response.razorpay_signature,
+                            amount: {{ grand_total|floatformat:2 }} * 100,
+                            address_id: selectedAddressId
+                        };
+
+                        fetch("/save-payment/", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRFToken": "{{ csrf_token }}"
+                            },
+                            body: JSON.stringify(paymentData)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert("Payment successfully recorded!");
+                                window.location.href = "/order-success/?payment_id=" + data.payment_id;
+                            } else {
+                                alert("Payment verification failed: " + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                    },
+                    "prefill": {
+                        "name": "Raza Turabi",
+                        "email": "razaturabi92@gmail.com",
+                        "contact": "+919967438799"
+                    },
+                    "theme": {
+                        "color": "orange"
+                    },
+                    "method": "upi"
+                };
+
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+                e.preventDefault();
+            }
+        </script>
+    {% else %}
+        <p class="empty-cart">Your cart is empty.</p>
+    {% endif %}
+</div>
+{% endblock %}

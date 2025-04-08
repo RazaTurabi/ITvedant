@@ -1,0 +1,254 @@
+{% extends "core/base.html" %}
+<!-- product_list.html -->
+{% block content %}
+<form method="get" action="{% url 'product_list2' %}" class="container main-container" >
+    <!-- Hamburger Button for Mobile -->
+    <div class="mobile-filter-header d-md-none" >
+        <button class="filter-toggle btn btn-primary" type="button">
+            Filters
+        </button>
+    </div>
+
+    <!-- Filters (Left side) -->
+    <div class="filters-sidebar">
+        <div class="filter-header">
+            <h4>Filters</h4>
+            <button class="close-filter btn btn-outline-secondary d-md-none" type="button">×</button>
+        </div>
+        
+        <!-- Price Range -->
+        <div class="mb-3">
+            <label for="min_price" class="form-label">Min Price:</label>
+            <input type="number" name="min_price" id="min_price" step="0.01" class="form-control" placeholder="Min Price" value="{{ request.GET.min_price }}">
+        </div>
+
+        <div class="mb-3">
+            <label for="max_price" class="form-label">Max Price:</label>
+            <input type="number" name="max_price" id="max_price" step="0.01" class="form-control" placeholder="Max Price" value="{{ request.GET.max_price }}">
+        </div>
+
+        <!-- Bootstrap Range Slider for Price -->
+        <div class="mb-3">
+            <label for="price_range" class="form-label">Price Range:</label>
+            <input type="range" class="form-range" min="0" max="1000" step="1" id="price_range" name="price_range" value="{{ request.GET.price_range|default:500 }}">
+            <div class="d-flex justify-content-between">
+                <span>0</span>
+                <span>1000</span>
+            </div>
+        </div>
+
+        <!-- Color Filter -->
+        <div class="mb-3">
+            <label for="color" class="form-label">Color:</label>
+            <select name="color" id="color" class="form-select">
+                <option value="">-- Select Color --</option>
+                <option value="Red" {% if request.GET.color == "Red" %}selected{% endif %}>Red</option>
+                <option value="Blue" {% if request.GET.color == "Blue" %}selected{% endif %}>Blue</option>
+                <option value="Green" {% if request.GET.color == "Green" %}selected{% endif %}>Green</option>
+                <option value="Yellow" {% if request.GET.color == "Yellow" %}selected{% endif %}>Yellow</option>
+                <option value="Orange" {% if request.GET.color == "Orange" %}selected{% endif %}>Orange</option>
+                <option value="Voilet" {% if request.GET.color == "Voilet" %}selected{% endif %}>Voilet</option>
+                <option value="Black" {% if request.GET.color == "Black" %}selected{% endif %}>Black</option>
+            </select>
+        </div>
+
+        <!-- Size Filter -->
+        <div class="mb-3">
+            <label for="size" class="form-label">Size:</label>
+            <select name="size" id="size" class="form-select">
+                <option value="">-- Select Size --</option>
+                <option value="S" {% if request.GET.size == "S" %}selected{% endif %}>S</option>
+                <option value="M" {% if request.GET.size == "M" %}selected{% endif %}>M</option>
+                <option value="L" {% if request.GET.size == "L" %}selected{% endif %}>L</option>
+                <option value="XL" {% if request.GET.size == "XL" %}selected{% endif %}>XL</option>
+                <option value="XXL" {% if request.GET.size == "XXL" %}selected{% endif %}>XXL</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+    </div>
+
+    <!-- Products (Right side) -->
+    <div class="products-container">
+        <h2>Products</h2>
+        <ul class="list-unstyled">
+            {% for product in products %}
+                <a href="{% url 'product2_details' product.id %}" style='text-decoration:none; color:black;'>
+                    <li class="product-item">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                        <div>
+                            <h3>{{ product.name }}</h3>
+                            <p><strong>Price:</strong> ${{ product.price }}</p>
+                            <p><strong>Color:</strong> {{ product.color }}</p>
+                            <p><strong>Size:</strong> {{ product.size }}</p>
+                            <p><strong>Description:</strong> {{ product.description|default:"No description available." }}</p>
+                        </div>
+                    </li>
+                </a>
+            {% empty %}
+                <p>No products found with the selected filters.</p>
+            {% endfor %}
+        </ul>
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+            {% endif %}
+        
+            {% for num in paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endfor %}
+        
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</form>
+
+<style>
+    /* Base Styles */
+    .main-container {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+        padding: 0 15px;
+        position: relative;
+    }
+
+    .filters-sidebar {
+        flex: 0 0 300px;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: #fff;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .filter-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .close-filter {
+        font-size: 24px;
+        padding: 0 10px;
+    }
+
+    .products-container {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .product-item {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 8px;
+        display: flex;
+        gap: 20px;
+        transition: transform 0.2s;
+    }
+
+    .product-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .product-image {
+        max-width: 200px;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    .mobile-filter-header {
+        margin-bottom: 15px;
+    }
+
+    .filter-toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 767px) {
+        .main-container {
+            flex-direction: column;
+            padding: 0;
+        }
+
+        .filters-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            z-index: 1000;
+            transform: translateX(-100%);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+            overflow-y: auto;
+        }
+
+        .filters-sidebar.active {
+            transform: translateX(0);
+        }
+
+        .products-container {
+            padding: 20px;
+        }
+
+        .product-item {
+            flex-direction: column;
+        }
+
+        .product-image {
+            max-width: 100%;
+        }
+    }
+
+    /* Tablet Styles */
+    @media (min-width: 768px) and (max-width: 991px) {
+        .filters-sidebar {
+            flex: 0 0 250px;
+        }
+
+        .product-image {
+            max-width: 150px;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.querySelector('.filter-toggle');
+        const closeButton = document.querySelector('.close-filter');
+        const sidebar = document.querySelector('.filters-sidebar');
+
+        toggleButton.addEventListener('click', function() {
+            sidebar.classList.add('active');
+        });
+
+        closeButton.addEventListener('click', function() {
+            sidebar.classList.remove('active');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            if (window.innerWidth <= 767 && 
+                !sidebar.contains(event.target) && 
+                !toggleButton.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+    });
+</script>
+
+{% endblock content %}

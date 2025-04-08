@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}
+{% block content %}
+<div class="container text-center mt-5" style='margin-bottom: 2rem;'>
+    <h1 class="text-success" style='margin-top: 7rem;'>Payment Successful!</h1>
+    <p class="lead">Thank you for your purchase.</p>
+    {% if payment %}
+        <p><strong>Payment ID:</strong> {{ payment.payment_id }}</p>
+        <p><strong>Amount:</strong> ₹{{ payment.amount }}</p>
+        <p><strong>Status:</strong> {{ payment.payment_status }}</p>
+        <p><strong>Address:</strong> {{address}} </p>
+    {% endif %}
+    <a href="/" class="btn btn-primary mt-3">Continue Shopping</a>
+    <a href="{% url "my_orders" %}" class="btn btn-primary mt-3">Track Order !</a>
+</div>
+{% endblock %}

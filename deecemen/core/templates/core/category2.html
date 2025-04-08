@@ -1,0 +1,173 @@
+{% load static %}
+{% block content %}
+
+<style>
+    /* Container for the category section */
+    .category-section {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+        padding: 0 15px;
+    }
+
+    /* Each anchor tag */
+    .category-section a {
+        flex: 0 0 auto; /* Don't allow the anchor tags to grow or shrink */
+        width: 100%; /* Default for mobile, ensures images are full width on smaller screens */
+        max-width: 320px; /* Set max-width for large images */
+        position: relative; /* To position text and button over the image */
+        overflow: hidden; /* Hide any overflow caused by the image size */
+    }
+
+    /* Image styling */
+    .category-section img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+        object-fit: cover; /* Ensures the image covers the container properly */
+        border-radius: 8px; /* Optional: Adds rounded corners for the images */
+        transition: filter 0.3s ease-in-out; /* Smooth transition for the blur effect */
+    }
+
+    /* Hover effect on image */
+    .category-section a:hover img {
+        filter: blur(5px); /* Apply blur on hover */
+    }
+
+    /* The overlay containing text and button */
+    .category-section a .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0; /* Initially hidden */
+        transition: opacity 0.3s ease-in-out; /* Smooth transition */
+    }
+
+    /* Show the overlay on hover */
+    .category-section a:hover .overlay {
+        opacity: 1; /* Show the overlay on hover */
+    }
+
+    /* Styling for text */
+    .overlay .text {
+        font-size: 18px;
+        text-align: center;
+        padding: 10px;
+    }
+
+    /* Styling for the button */
+    .overlay .btn {
+        padding: 10px 20px;
+        background-color: red;
+        color: white;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        text-transform: uppercase;
+        margin-top: 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .overlay .btn:hover {
+        background-color: #e67e22;
+    }
+
+    /* Mobile screens (up to 767px) */
+    @media (max-width: 767px) {
+        .category-section a {
+            width: 100%; /* Ensure the anchor takes full width on small screens */
+            max-width: 100%; /* Allow full width for images */
+        }
+
+        .category-section img {
+            height: auto; /* Default height behavior for smaller screens */
+        }
+    }
+
+    /* Tablet screens (768px to 991px) */
+    @media (min-width: 768px) and (max-width: 991px) {
+        .category-section a {
+            width: calc(50% - 10px); /* Two items per row */
+            max-width: calc(50% - 10px); /* Subtract gap between items */
+        }
+
+        .category-section img {
+            height: auto; /* Maintain aspect ratio */
+        }
+    }
+
+    /* Large screens (992px and up) */
+    @media (min-width: 992px) {
+        .category-section a {
+            width: calc(25% - 15px); /* Four items per row */
+            max-width: calc(25% - 15px); /* Subtract gap between items */
+        }
+
+        .category-section img {
+            height: 400px; /* Set a specific height for images on large screens */
+        }
+    }
+</style>
+
+<h1 style='margin-top: 2rem; text-align:center;'>LATEST COLLECTION</h1>
+<div class="category-section">
+    <a href="{% url 'men_category' %}">
+        <img src="{% static 'core/images/mancat.png' %}" alt="">
+        <div class="overlay">
+            <div class="text">
+                Unleash your style with the boldest fits for men. From streetwear essentials to statement pieces, redefine your wardrobe.
+            </div>
+            <button class="btn">Shop Now →</button>
+        </div>
+    </a>
+    <a href="{% url 'women_category' %}">
+        <img src="{% static 'core/images/womencat.png' %}" alt="">
+        <div class="overlay">
+            <div class="text">
+                Elevate your vibe with trendsetting pieces designed for confidence and attitude. Streetwear meets sophistication.
+            </div>
+            <button class="btn">Shop Now →</button>
+        </div>
+    </a>
+    <a href="{% url 'kids_category' %}">
+        <img src="{% static 'core/images/kidscat.png' %}" alt="">
+        <div class="overlay">
+            <div class="text">
+                Drip starts young! Stylish, comfy, and playful fits for the little ones who love to stand out.
+            </div>
+            <button class="btn">Shop Now →</button>
+        </div>
+    </a>
+    <a href="{% url 'hoodjack_category' %}">
+        <img src="{% static 'core/images/hoodjacketcat.png' %}" alt="">
+        <div class="overlay">
+            <div class="text">
+                Cold? Not in this fit. Stay warm while looking fresh with our premium winter collection.
+            </div>
+            <button class="btn">Shop Now →</button>
+        </div>
+    </a>
+    <a href="{% url 'footwear_category' %}">
+        <img src="{% static 'core/images/Accessories.png' %}" alt="">
+        <div class="overlay">
+            <div class="text">
+                Unleash your style with the boldest fits for men. From streetwear essentials to statement pieces, redefine your wardrobe.
+            </div>
+            <button class="btn">Shop Now →</button>
+        </div>
+    </a>
+</div>
+
+{% endblock content %}

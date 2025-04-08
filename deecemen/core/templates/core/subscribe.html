@@ -1,0 +1,164 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+{% if messages %}
+    <div class="custom-messages-container" style='margin-top: 10rem; margin-bottom:-10rem;'>
+        {% for message in messages %}
+            <p class="custom-message">{{message}}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<!-- Newsletter Section -->
+<div class="custom-newsletter-container" style='margin-top: 12rem;'>
+    <h1 class="custom-newsletter-title">Subscribe to our newsletter</h1>
+    <form action="{% url 'subscribe' %}" method="post" class="custom-newsletter-form">
+        {% csrf_token %}
+        <div class="custom-form-fields">
+            {{mf.as_p}}
+        </div>
+        <button type="submit" class="custom-subscribe-btn">Subscribe →</button>
+    </form>
+</div>
+
+<style>
+    /* Messages styling */
+    .custom-messages-container {
+        margin: 1.5rem auto;
+        max-width: 800px;
+        padding: 0 1rem;
+    }
+    
+    .custom-message {
+        font-size: 1.1rem;
+        padding: 0.8rem 1rem;
+        margin-bottom: 0.8rem;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+        border-left: 4px solid #4CAF50;
+    }
+    
+    /* Newsletter container */
+    .custom-newsletter-container {
+        max-width: 800px;
+        margin: 3rem auto;
+        padding: 2rem;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    /* Newsletter title */
+    .custom-newsletter-title {
+        font-size: 2.2rem;
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+    
+    /* Newsletter form */
+    .custom-newsletter-form {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    /* Form fields */
+    .custom-form-fields {
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+    
+    .custom-form-fields p {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 1.2rem;
+    }
+    
+    .custom-form-fields label {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        color: #34495e;
+        font-weight: 500;
+    }
+    
+    .custom-form-fields input {
+        padding: 0.8rem 1rem;
+        font-size: 1.1rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        width: 100%;
+        transition: border-color 0.3s;
+    }
+    
+    .custom-form-fields input:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+    }
+    
+    /* Subscribe button */
+    .custom-subscribe-btn {
+        padding: 0.9rem 2rem;
+        font-size: 1.2rem;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        width: auto;
+        align-self: center;
+    }
+    
+    .custom-subscribe-btn:hover {
+        background-color: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .custom-newsletter-container {
+            padding: 1.5rem;
+            margin: 2rem 1rem;
+        }
+        
+        .custom-newsletter-title {
+            font-size: 1.8rem;
+        }
+        
+        .custom-form-fields label,
+        .custom-form-fields input,
+        .custom-subscribe-btn {
+            font-size: 1rem;
+        }
+        
+        .custom-subscribe-btn {
+            padding: 0.8rem 1.5rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .custom-newsletter-container {
+            padding: 1.2rem;
+        }
+        
+        .custom-newsletter-title {
+            font-size: 1.5rem;
+        }
+        
+        .custom-message {
+            font-size: 1rem;
+        }
+    }
+</style>
+
+{% endblock content %}

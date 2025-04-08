@@ -1,0 +1,38 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+<br><br><br>
+<div class="container petdetails" style='margin-top: 3rem; margin-bottom: 3rem;'> 
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <span class="border border-danger">
+                <img src="{{cd.image.url}}" class="img-fluid rounded border border-primary"  alt="Responsive image" >
+            </span>
+        </div>
+        <div class="col-sm-6">
+            <div class="container">
+                <h1 class="jumbotron-heading text-center text-danger">NAME: {{cd.name}}</h1>
+                <h3 class="jumbotron-heading text-center text-danger">COLOR: {{cd.color}}</h3>
+                <h3 class="jumbotron-heading text-center text-danger">PRICE: {{cd.size}}</h3>
+                <p class="lead text-center">DESCRIPTION: {{cd.description}}</p>
+                <div class="text-center">
+                    <h4 class="font-weight-bold"><i class="fa-solid fa-indian-rupee-sign"></i>{{cd.price}} <small class="fw-light rupee">{{dc.original_price}}</small> <small class="text-danger">(72% off)</small></h4> 
+                    {% comment %} <a href="{% url 'add_to_cart' cd.id 'product1' %}" class="btn btn-info my-2 mr-2">Add to cart</a> {% endcomment %}
+                    <form action="{% url 'add_to_cart' 'product' cd.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                    </form>
+                    <a href="" class="btn btn-success my-2">Buy Now</a>
+                </div>
+                {% comment %} <div class="description">
+                    <h2 class="jumbotron-heading mt-5">Description</h2>
+                    {{cd.desc}}
+                </div> {% endcomment %}
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock content %}

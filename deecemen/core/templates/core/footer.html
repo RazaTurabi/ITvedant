@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Site{% endblock %}</title>
+
+    <!-- Bootstrap & FontAwesome -->
+   
+
+    <style>
+       
+
+        .bodysss {
+            display: flex;
+            margin:0px;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            flex: 1;
+        }
+
+        /* Footer Styles */
+        .footers {
+            background-color: #000;
+            color: #eee;
+            padding: 40px 30px;
+        }
+
+        .footer-containers {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; /* Centered look on big screens */
+            gap: 2rem;
+            padding: 0 20px;
+        }
+        .footer-logos img {
+            width: 160px;
+            margin-bottom: 15px;
+            border-radius: 15px;
+        }
+
+        .footer-socialss {
+            margin-top: 10px;
+        }
+
+        .footer-socialss a {
+            color: #aaa;
+            margin-right: 10px;
+            font-size: 20px;
+            transition: 0.3s;
+        }
+
+        .footer-socialss a:hover {
+            color: red;
+        }
+
+        .footer-linkss, .footer-contact {
+            min-width: 200px;
+        }
+
+        .footer-linkss h3, .footer-contact h3 {
+            color: red;
+            margin-bottom: 15px;
+        }
+
+        .footer-linkss a {
+            display: block;
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
+        .footer-linkss a:hover {
+            color: red;
+        }
+
+        .footer-contact p {
+            margin: 0 0 10px;
+            color: #bbb;
+        }
+
+        @media (max-width: 768px) {
+            .footer-containers {
+                flex-direction: column;
+                padding-right: 10px;
+            }
+
+            .footer-logos, .footer-linkss, .footer-contact {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body class="bodysss">
+
+    <div class="content-wrapper">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <footer class="footers">
+        <div class="footer-containers">
+            <!-- Logo and Social -->
+            <div class="footer-logos">
+                <img src="{% static 'core/images/formen_logo.png' %}" alt="Logo">
+                <div class="footer-socialss">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-linkss">
+                <h3>Quick Links</h3>
+                <a href="#">Contact Us</a>
+                <a href="#">Track Order</a>
+                <a href="#">Collections</a>
+                <a href="#">About Us</a>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-contact">
+                <h3>Contact</h3>
+                <p>1234 Street Name, City, Country</p>
+                <p>Phone: +1 234 567 890</p>
+                <p>Email: support@example.com</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
